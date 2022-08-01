@@ -1,0 +1,15 @@
+
+
+	void removeRange(T target1, T target2);
+	DList<T> copy();		// copy and return linked list
+
+
+HARD
+_________________
+
+void insertRangeBefore(T before, DList<T> range);
+void insertRangeAfter(T after, DList<T> range);
+
+DList(const DList<T> &L); // copy constructor. it is used when you create a new object from existing DList object
+
+check count
