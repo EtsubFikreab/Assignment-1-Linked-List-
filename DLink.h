@@ -19,14 +19,14 @@ class DList
 public:
 	DList();				  // default constructor
 	DList(bool sorted);		  // other constructor
-	DList( DList<T> &L); // copy constructor. it is used when you create a new object from existing DList object
+	DList(const DList<T> &L); // copy constructor. it is used when you create a new object from existing DList object
 	virtual ~DList();		  // destructor
-	bool isEmpty(){return head==NULL;}
-	void insertFirst(T data);	 // insert first
-	void insertBack(T data);	 // insert last
+	bool isEmpty() { return head == NULL; }
+	void insertFirst(T data);			 // insert first
+	void insertBack(T data);			 // insert last
 	void insertBefore(T before, T data); // insert before first occurrence of some data
 	void insertAfter(T after, T data);	 // insert before last occurrence of some data
-	int insert(T data);			 // insert at last for unsorted, insert at appropriate position
+	int insert(T data);					 // insert at last for unsorted, insert at appropriate position
 	void insertRangeBefore(T before, DList<T> range);
 	void insertRangeAfter(T after, DList<T> range);
 	int removeFirst(); // remove first

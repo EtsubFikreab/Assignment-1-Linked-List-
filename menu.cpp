@@ -175,7 +175,46 @@ void insertData(DList<T> *List, bool sort)
 }
 
 // delete
-int removeMessage()
+template <class T>
+T returnDataRemove()
+{
+    // gets data from the user and checks its validity
+    T data;
+    do
+    {
+        cout << "Enter the data you want to remove: ";
+        cin >> data;
+        if (!cin)
+        {
+            cout << "\nInvalid input, press Enter to try again... ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+            cin.get();
+        }
+    } while (!cin);
+    return data;
+}
+template <class T>
+T returnDataRemove(string word)
+{
+    // word for indicating whether input is the first or second data
+    //  gets data from the user and checks its validity
+    T data;
+    do
+    {
+        cout << "\nEnter the data where the range " << word << ": ";
+        cin >> data;
+        if (!cin)
+        {
+            cout << "\nInvalid input, press Enter to try again... ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+            cin.get();
+        }
+    } while (!cin);
+    return data;
+}
+int removeType()
 {
     int choice;
     do
@@ -185,7 +224,8 @@ int removeMessage()
              << "\n1.Remove specific data"
              << "\n2.Remove First"
              << "\n3.Remove Last"
-             << "\n4.Remove by range" << endl;
+             << "\n4.Remove by range"
+             << "\n5.Empty the list" << endl;
 
         cout << "\nEnter your choice: ";
         cin >> choice;
@@ -200,6 +240,55 @@ int removeMessage()
         system("cls");
     } while (choice < 1 || choice > 5);
     return choice;
+}
+template <class T>
+void removeData(DList<T> *List)
+{
+    int rType = removeType();
+    if (rType == 1)
+        List->remove(returnDataRemove<T>());
+    else if (rType == 2)
+        List->removeFirst();
+    else if (rType == 3)
+        List->removeLast();
+    else if (rType == 4)
+    {
+        List->DisplayForward(&DefaultDisplayer);
+        T begin = returnDataRemove<T>("begins");
+        T end = returnDataRemove<T>("ends");
+        List->removeRange(begin, end);
+    }
+    else if (rType == 5)
+        List->empty();
+}
+
+// find
+template <class T>
+T returnSearchData()
+{
+    // gets data from the user and checks its validity
+    T data;
+    do
+    {
+        cout << "Enter the data you want to Search: ";
+        cin >> data;
+        if (!cin)
+        {
+            cout << "\nInvalid input, press Enter to try again... ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+            cin.get();
+        }
+    } while (!cin);
+    return data;
+}
+template <class T>
+void findData(DList<T> *List)
+{
+    if (List->find(returnSearchData<T>()) == NULL)
+        cout << "Data does'nt exist in the linked list";
+    else
+        cout << "Data exists in the linked list";
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,30 +307,42 @@ void MainMenu(DList<T> *List, bool sort)
             cin.clear();
             choice = 0;
         }
-        else if (choice == 1)
+        else
         {
-            insertData(List, sort);
+            if (!(choice == 4 || choice == 5 || choice == 6))
+            {
+                cout << "\nCurrent List: ";
+                List->DisplayForward(&DefaultDisplayer);
+                cout << endl;
+            }
+
+            if (choice == 1)
+            {
+                insertData(List, sort);
+            }
+            else if (choice == 2)
+            {
+                removeData(List);
+            }
+            else if (choice == 3)
+            {
+                findData(List);
+            }
+            else if (choice == 4)
+            {
+                List->DisplayForward(&DefaultDisplayer);
+            }
+            else if (choice == 5)
+            {
+                List->DisplayBackward(&DefaultDisplayer);
+            }
+            if (!(choice == 4 || choice == 5 || choice == 6 || choice == 3))
+            {
+                List->DisplayForward(&DefaultDisplayer);
+            }
         }
-        else if (choice == 2)
-        {
-        }
-        else if (choice == 3)
-        {
-            
-        }
-        else if (choice == 4)
-        {
-            List->DisplayForward(&DefaultDisplayer);
-        }
-        else if (choice == 5)
-        {
-            List->DisplayBackward(&DefaultDisplayer);
-        }
-        if (choice != 1)
-        {
-            cout << "\npress Enter to continue... ";
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
-        }
+        cout << "\npress Enter to continue... ";
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         cin.get();
         system("cls");
     }

@@ -2,7 +2,6 @@
 #include <typeinfo>
 using namespace std;
 template <class T>
-
 // Constructors
 DList<T>::DList()
 {
@@ -123,7 +122,16 @@ void DList<T>::insertBefore(T before, T data)
         prev = NULL;
     else
     {
-        prev = find(before)->prev;
+        prev = find(before);
+        if (prev == NULL)
+        {
+            cout << "\nInvalid input, press Enter to try again... ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+            cin.get();
+            return;
+        }
+        prev = prev->prev;
     }
 
     insertNode(p, prev);
@@ -142,6 +150,14 @@ void DList<T>::insertAfter(T after, T data)
     else
     {
         prev = find(after);
+    }
+    if (prev == NULL)
+    {
+        cout << "\nInvalid input, press Enter to try again... ";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cin.get();
+        return;
     }
 
     insertNode(p, prev);
@@ -242,6 +258,8 @@ int DList<T>::removeLast()
 template <class T>
 void DList<T>::empty()
 {
+    if (isEmpty())
+        return;
     dnode<T> *p;
     while (head != NULL)
     {
@@ -257,17 +275,21 @@ void DList<T>::empty()
 
 // Copy Constructor
 template <class T>
-DList<T>::DList(DList<T> &L)
+DList<T>::DList(const DList<T> &L)
 {
-    // TODO:
-    cout << "\ncopy constructor\n";
-    DList<T> *temp = (L.copy());
-    ;
+    head = NULL;
+    tail= NULL;
+    sorted= L.sorted;
+    dnode<T> *tempHead = L.head;
+    while (tempHead != NULL)
+    {
+        insert(tempHead->data);
+        tempHead = tempHead->next;
+    }
 }
 template <class T>
 DList<T> DList<T>::copy()
 {
-    // TODO
     DList<T> *temp = new (nothrow) DList<T>(sorted);
     dnode<T> *tempHead = head;
     while (tempHead != NULL)
@@ -275,9 +297,6 @@ DList<T> DList<T>::copy()
         temp->insert(tempHead->data);
         tempHead = tempHead->next;
     }
-    cout << "copy function\n";
-    cout << "sorted: " << temp->sorted;
-    temp->DisplayForward(&DefaultDisplayer);
     return *temp;
 }
 
@@ -301,7 +320,7 @@ void DList<T>::removeRange(T target1, T target2)
         {
             end = tempHead;
         }
-        tempHead=tempHead->next;
+        tempHead = tempHead->next;
     }
     if (begin == end || begin == NULL || end == NULL)
     {
@@ -310,39 +329,13 @@ void DList<T>::removeRange(T target1, T target2)
         cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         return;
     }
-    while(begin!=end){
-        tempHead=begin->next;
+    while (begin != end)
+    {
+        tempHead = begin->next;
         deleteNode(begin);
-        begin=tempHead;
+        begin = tempHead;
     }
-    deleteNode(begin);//delete final element in the range
-    
+    deleteNode(begin); // delete final element in the range
 }
 // void insertRangeBefore(T before, DList<T> range);
 // void insertRangeAfter(T after, DList<T> range);
-
-/*int main()
-{
-    DList<int> *a = new DList<int>(false);
-    a->insertFirst(2);
-    a->insert(9);
-    a->insert(4);
-    a->insert(44);
-    a->insert(1);
-    a->insert(18);
-    a->insert(7);
-    a->insertBefore(2, 12);
-    a->DisplayForward(&DefaultDisplayer);
-    cout << endl;
-    a->removeRange(12,7);
-    a->DisplayForward(&DefaultDisplayer);
-    cout << endl;
-        a->insert(9);
-    a->insert(4);
-    a->insert(44);
-    a->DisplayForward(&DefaultDisplayer);
-
-    // DList<int> *b =new DList<int>(*a);
-
-    // b->DisplayForward(&DefaultDisplayer);
-}*/

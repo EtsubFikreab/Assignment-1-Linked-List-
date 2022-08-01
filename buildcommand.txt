@@ -1,0 +1,7 @@
+g++ -c .\menu.cpp .\DLink.cpp
+g++ .\menu.o .\DLink.o
+.\a.exe
+
+
+
+lelalaw exe file just for testing nbr
