@@ -19,11 +19,40 @@ DList<T>::DList(bool sorted)
     count = 0;
 }
 
+
+// Copy Constructor
+template <class T>
+DList<T>::DList(const DList<T> &L)
+{
+    head = NULL;
+    tail = NULL;
+    sorted = L.sorted;
+    dnode<T> *tempHead = L.head;
+    while (tempHead != NULL)
+    {
+        insert(tempHead->data);
+        tempHead = tempHead->next;
+    }
+}
+
 // Destructor
 template <class T>
 DList<T>::~DList()
 {
     empty();
+}
+
+template <class T>
+DList<T> DList<T>::copy()
+{
+    DList<T> *temp = new (nothrow) DList<T>(sorted);
+    dnode<T> *tempHead = head;
+    while (tempHead != NULL)
+    {
+        temp->insert(tempHead->data);
+        tempHead = tempHead->next;
+    }
+    return *temp;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +99,7 @@ void DList<T>::insertNode(dnode<T> *p, dnode<T> *prev)
         else
             p->next->prev = p;
     }
+    count++;
 }
 template <class T>
 int DList<T>::insert(T data)
@@ -87,7 +117,6 @@ int DList<T>::insert(T data)
     }
 
     insertNode(p, prev);
-    count++;
     return 0;
 }
 template <class T>
@@ -98,7 +127,6 @@ void DList<T>::insertFirst(T data)
         return;
     p->data = data;
     insertNode(p, NULL);
-    count++;
 }
 template <class T>
 void DList<T>::insertBack(T data)
@@ -108,7 +136,6 @@ void DList<T>::insertBack(T data)
         return;
     p->data = data;
     insertNode(p, tail);
-    count++;
 }
 template <class T>
 void DList<T>::insertBefore(T before, T data)
@@ -135,7 +162,6 @@ void DList<T>::insertBefore(T before, T data)
     }
 
     insertNode(p, prev);
-    count++;
 }
 template <class T>
 void DList<T>::insertAfter(T after, T data)
@@ -161,7 +187,6 @@ void DList<T>::insertAfter(T after, T data)
     }
 
     insertNode(p, prev);
-    count++;
 }
 template <class T>
 void DList<T>::insertRangeBefore(T before, DList<T> range)
@@ -319,36 +344,6 @@ void DList<T>::empty()
         head = p;
     }
     tail = head;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Copy Constructor
-template <class T>
-DList<T>::DList(const DList<T> &L)
-{
-    head = NULL;
-    tail = NULL;
-    sorted = L.sorted;
-    dnode<T> *tempHead = L.head;
-    while (tempHead != NULL)
-    {
-        insert(tempHead->data);
-        tempHead = tempHead->next;
-    }
-}
-template <class T>
-DList<T> DList<T>::copy()
-{
-    DList<T> *temp = new (nothrow) DList<T>(sorted);
-    dnode<T> *tempHead = head;
-    while (tempHead != NULL)
-    {
-        temp->insert(tempHead->data);
-        tempHead = tempHead->next;
-    }
-    return *temp;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

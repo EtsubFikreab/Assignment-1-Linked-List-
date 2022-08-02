@@ -1,0 +1,3 @@
+g++ -c .\menu.cpp .\DLink.cpp
+g++ -o .\main.exe .\menu.o .\DLink.o
+.\main.exe
