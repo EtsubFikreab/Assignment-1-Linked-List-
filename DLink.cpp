@@ -163,7 +163,58 @@ void DList<T>::insertAfter(T after, T data)
     insertNode(p, prev);
     count++;
 }
-
+template <class T>
+void DList<T>::insertRangeBefore(T before, DList<T> range)
+{
+    dnode<T> *p;
+    p = find(before);
+    if (p == NULL)
+    {
+        cout << "\nInvalid input, press Enter to try again... ";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cin.get();
+        return;
+    }
+    p=p->prev;
+    dnode<T> *tempHead = range.head;
+    while (tempHead!=NULL)
+    {
+        dnode<T> *current = new dnode<T>;
+        if (current == NULL)
+            return;
+        current->data =tempHead->data;
+        insertNode(current, p);
+        p=current;
+        tempHead=tempHead->next;
+    }
+    range.empty();
+}
+template <class T>
+void DList<T>::insertRangeAfter(T after, DList<T> range){
+    dnode<T> *p;
+    p = find(after);
+    if (p == NULL)
+    {
+        cout << "\nInvalid input, press Enter to try again... ";
+        cin.clear();
+        cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+        cin.get();
+        return;
+    }
+    dnode<T> *tempHead = range.head;
+    while (tempHead!=NULL)
+    {
+        dnode<T> *current = new dnode<T>;
+        if (current == NULL)
+            return;
+        current->data =tempHead->data;
+        insertNode(current, p);
+        p=current;
+        tempHead=tempHead->next;
+    }
+    range.empty();
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -278,8 +329,8 @@ template <class T>
 DList<T>::DList(const DList<T> &L)
 {
     head = NULL;
-    tail= NULL;
-    sorted= L.sorted;
+    tail = NULL;
+    sorted = L.sorted;
     dnode<T> *tempHead = L.head;
     while (tempHead != NULL)
     {
@@ -337,5 +388,3 @@ void DList<T>::removeRange(T target1, T target2)
     }
     deleteNode(begin); // delete final element in the range
 }
-// void insertRangeBefore(T before, DList<T> range);
-// void insertRangeAfter(T after, DList<T> range);

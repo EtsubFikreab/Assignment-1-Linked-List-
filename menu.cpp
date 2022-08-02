@@ -125,22 +125,47 @@ T returnDataBeforeOrAfter()
     } while (!cin);
     return data;
 }
+template <class T>
+DList<T> getRange()
+{
+    DList<T> range;
+    int counter;
+    do
+    {
+        cout << "Enter the amount of elements you want to enter: ";
+        cin >> counter;
+        if (!cin)
+        {
+            cout << "\nInvalid input, press Enter to try again... ";
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+            cin.get();
+        }
+    } while (!cin);
+    while(counter!=0){
+        range.insert(returnData<T>());
+        counter--;
+    }
+    return range;
+}
 int insertType()
 {
     int choice;
     do
     {
-        cout << "Insert Type" << endl
+        cout << "\nInsert Type" << endl
              << "-----------" << endl
              << "\n1.Insert"
-             << "\n2.Insert First"
-             << "\n3.Insert Last"
-             << "\n4.Insert After a particular data"
-             << "\n5.Insert Before a particular data" << endl;
+             << "\n2.Insert first"
+             << "\n3.Insert last"
+             << "\n4.Insert after a particular data"
+             << "\n5.Insert before a particular data"
+             << "\n6.Insert range after a particular data"
+             << "\n7.Insert range before a particular data" << endl;
 
         cout << "\nEnter your choice: ";
         cin >> choice;
-        if (!cin || choice < 1 || choice > 5)
+        if (!cin || choice < 1 || choice > 7)
         {
             cout << "\nInvalid input, press Enter to try again... ";
             cin.clear();
@@ -148,8 +173,7 @@ int insertType()
             cin.get();
             choice = 0;
         }
-        system("cls");
-    } while (choice < 1 || choice > 5);
+    } while (choice < 1 || choice > 7);
     return choice;
 }
 template <class T>
@@ -161,17 +185,25 @@ void insertData(DList<T> *List, bool sort)
         return;
     }
     int iType = insertType();
-    T data = returnData<T>();
-    if (iType == 1)
-        List->insert(data);
-    else if (iType == 2)
-        List->insertFirst(data);
-    else if (iType == 3)
-        List->insertBack(data);
-    else if (iType == 4)
-        List->insertAfter(returnDataBeforeOrAfter<T>(), data);
-    else if (iType == 5)
-        List->insertBefore(returnDataBeforeOrAfter<T>(), data);
+    if (iType < 6)
+    {
+
+        T data = returnData<T>();
+        if (iType == 1)
+            List->insert(data);
+        else if (iType == 2)
+            List->insertFirst(data);
+        else if (iType == 3)
+            List->insertBack(data);
+        else if (iType == 4)
+            List->insertAfter(returnDataBeforeOrAfter<T>(), data);
+        else if (iType == 5)
+            List->insertBefore(returnDataBeforeOrAfter<T>(), data);
+    }
+    else if (iType == 6)
+        List->insertRangeAfter(returnDataBeforeOrAfter<T>(), getRange<T>());
+    else if (iType == 7)
+        List->insertRangeBefore(returnDataBeforeOrAfter<T>(), getRange<T>());
 }
 
 // delete
@@ -338,6 +370,7 @@ void MainMenu(DList<T> *List, bool sort)
             }
             if (!(choice == 4 || choice == 5 || choice == 6 || choice == 3))
             {
+                cout<<"List: ";
                 List->DisplayForward(&DefaultDisplayer);
             }
         }
